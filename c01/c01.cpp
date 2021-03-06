@@ -2,8 +2,21 @@
 //
 
 #include <iostream>
+#include "DynamicArray.h"
+#include <locale.h>
+using namespace std;
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    setlocale(LC_ALL, "Rus");
+    cout << "Введите первый массив\n";
+    DynamicArray test;
+    cin >> test;
+    cout << test;
+    cout << "\nВведите второй массив\n";
+    DynamicArray test1;
+    cin >> test1;
+    cout << test1;
+
+    cout << "Результат сложения: " << test + test1 << endl;
 }

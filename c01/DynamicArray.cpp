@@ -25,9 +25,11 @@ DynamicArray::DynamicArray(const DynamicArray& dynamicArray) {
 	size = dynamicArray.size;
 	array = dynamicArray.array;
 }
-DynamicArray::DynamicArray(DynamicArray&& dynamicArray) : array(dynamicArray.array), size(dynamicArray.size) {
-	this->size = 0;
-	this->array = nullptr;
+DynamicArray::DynamicArray(DynamicArray&& dynamicArray){
+	this->array = dynamicArray.array;
+	this->size = dynamicArray.size;
+	delete dynamicArray.array;
+	dynamicArray.size = NULL;
 }
 DynamicArray::~DynamicArray() {
 	size = NULL;
@@ -50,5 +52,66 @@ void DynamicArray::resize(int newSize) {
 	for (int i = 0; i < newSize; i++) {
 		temp[i] = array[i];
 	}
+	delete array;
+	size = newSize;
+	array = new int[newSize];
+	for (int i = 0; i < newSize; i++) {
+		array[i] = temp[i];
+	}
+}
+bool operator!=(DynamicArray a, DynamicArray b) {
+	return !(a==b);
+}
 
+bool operator==(DynamicArray a, DynamicArray b)
+{
+	if (b.getSize() != a.getSize()) {
+		throw "–азные длины массивов, невозможно сравнивать";
+	}
+	for (int i = 0; i < a.getSize(); i++) {
+		if (a[i]!=b[i]) {
+			return false;
+		}
+	}
+	return true;
+}
+
+bool operator<(DynamicArray a, DynamicArray b) {
+	return a.size < b.size;
+}
+bool operator>(DynamicArray a, DynamicArray b) {
+	return a.size > b.size;
+}
+bool operator<=(DynamicArray a, DynamicArray b) {
+	return a.size < b.size || a.size == b.size;
+}
+bool operator>=(DynamicArray a, DynamicArray b) {
+	return a.size > b.size || a.size == b.size;
+}
+DynamicArray operator+(DynamicArray a, DynamicArray b) {
+	DynamicArray tmp(b.size + a.size);
+	for (int i = 0; i < a.size; i++) {
+		tmp[i] = a[i];
+	}
+	for (int i = a.size; i < b.size; i++) {
+		tmp[i] = b[i];
+	}
+	return tmp;
+}
+std::ostream& operator<<(ostream& out, DynamicArray a){
+	out << "[";
+	for (int i = 0; i < a.size-1; i++) {
+		out << a[i] << ", ";
+	}
+	out << a[a.size - 1] << "]";
+	return out;
+}
+
+std::istream& operator>>(std::istream& in, DynamicArray& a)
+{
+	in >> a.size;
+	for (int i = 0; i < a.size; i++) {
+		in >> a[i];
+	}
+	return in;
 }

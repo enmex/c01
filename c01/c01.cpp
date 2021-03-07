@@ -18,5 +18,17 @@ int main()
     cin >> test1;
     cout << test1;
 
-    cout << "Результат сложения: " << test + test1 << endl;
+
+    cout << "\nРезультат сложения: \n";
+    DynamicArray multiply(test + test1);
+    cout << multiply;
+
+    multiply.resize(15);
+    cout << "\nresize->15: " << multiply << endl;
+
+    cout << "a < b :" << (test < test1) << endl;
+    cout << "a > b :" << (test > test1) << endl;
+    cout << "a <= b :" << (test <= test1) << endl;
+    cout << "a >= b :" << (test >= test1) << endl;
+    cout << "a = b :" << (test == test1) << endl;
 }

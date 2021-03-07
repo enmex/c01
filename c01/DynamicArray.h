@@ -15,6 +15,10 @@ public:
 	////////
 	int getSize();
 	void resize(int newSize);
+	void reserve(int);
+	int capacity();
+
+
 	int& operator[](int);
 	friend bool operator==(DynamicArray, DynamicArray);
 	friend bool operator!=(DynamicArray, DynamicArray);
@@ -22,7 +26,7 @@ public:
 	friend bool operator>(DynamicArray, DynamicArray);
 	friend bool operator<=(DynamicArray, DynamicArray);
 	friend bool operator>=(DynamicArray, DynamicArray);
-	friend DynamicArray operator+(DynamicArray, DynamicArray);
-	friend std::ostream& operator<<(std::ostream& out, const DynamicArray);
+	friend const DynamicArray operator+(DynamicArray&, DynamicArray&);
+	friend std::ostream& operator<<(std::ostream& out, DynamicArray&);
 	friend std::istream& operator>>(std::istream& in, DynamicArray&);
 };

@@ -30,5 +30,23 @@ int main()
     cout << "a > b :" << (test > test1) << endl;
     cout << "a <= b :" << (test <= test1) << endl;
     cout << "a >= b :" << (test >= test1) << endl;
-    cout << "a = b :" << (test == test1) << endl;
+    cout << "a = b :" << (test == test1) << endl << endl;
+
+    multiply.reserve(10);
+    cout << "Резервивание прошло успешно, размер " << multiply.capacity() << ", а размер массива " << multiply.getSize() << endl;
+    multiply.resize(7);
+    cout << "resize(7): " << multiply << endl;
+    cout << "Изменение размера прошло успешно, размер " << multiply.capacity() << ", а размер массива " << multiply.getSize() << endl;
+
+    DynamicArray a(0);
+    int x;
+    for (int i = 0; i < 15; i++) {
+        cin >> x;
+        a.pushBack(x);
+        cout << a;
+    }
+    for (int i = 0; i < 15; i++) {
+        cout << a;
+        cout << a.popBack() << endl;
+    }
 }

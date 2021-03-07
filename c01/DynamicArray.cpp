@@ -6,6 +6,7 @@ DynamicArray::DynamicArray() {
 	size = 10;
 }
 DynamicArray::DynamicArray(int size) {
+	n = 0;
 	this->size = size;
 	array = new int[size+1];
 	for (int i = 0; i < size+1; i++) {
@@ -13,6 +14,7 @@ DynamicArray::DynamicArray(int size) {
 	}
 }
 DynamicArray::DynamicArray(int size, int n) {
+	this->n = 0;
 	this->size = size;
 	array = new int[size+1];
 	array[size] = 0;
@@ -21,6 +23,7 @@ DynamicArray::DynamicArray(int size, int n) {
 	}
 }
 DynamicArray::DynamicArray(const DynamicArray& dynamicArray) {
+	n = 0;
 	size = dynamicArray.size;
 	array = new int[size+1];
 	for (int i = 0; i < size; i++) {
@@ -28,6 +31,7 @@ DynamicArray::DynamicArray(const DynamicArray& dynamicArray) {
 	}
 }
 DynamicArray::DynamicArray(DynamicArray&& dynamicArray){
+	n = 0;
 	array = new int[dynamicArray.size+1];
 	size = dynamicArray.size;
 	for (int i = 0; i < size; i++) {
@@ -36,8 +40,18 @@ DynamicArray::DynamicArray(DynamicArray&& dynamicArray){
 	delete dynamicArray.array;
 	dynamicArray.size = NULL;
 }
+DynamicArray::DynamicArray(int size, int res) {
+	this->n = res;
+	this->size = size;
+	array = new int[size + 1];
+	array[size] = 0;
+	for (int i = 0; i < size; i++) {
+		array[i] = n;
+	}
+}
 DynamicArray::~DynamicArray() {
 
+	n = NULL;
 	size = NULL;
 	
 	delete array;
@@ -52,15 +66,22 @@ int& DynamicArray::operator[](int i) {
 }
 
 void DynamicArray::resize(int newSize) {
-	DynamicArray temp(newSize);
-	for (int i = 0; i < size; i++) {
-		temp[i] = array[i];
+	if (newSize <= n + size) {
+		n += abs(size - newSize);
+		size = newSize;
 	}
-	delete array;
-	size = newSize;
-	array = new int[newSize];
-	for (int i = 0; i < newSize; i++) {
-		array[i] = temp[i];
+	else {
+		n = 0;
+		DynamicArray temp(newSize);
+		for (int i = 0; i < size; i++) {
+			temp[i] = array[i];
+		}
+		delete array;
+		size = newSize;
+		array = new int[newSize];
+		for (int i = 0; i < newSize; i++) {
+			array[i] = temp[i];
+		}
 	}
 }
 bool operator!=(DynamicArray a, DynamicArray b) {
@@ -140,6 +161,34 @@ std::istream& operator>>(std::istream& in, DynamicArray& a)
 
 //задание 1.2
 void DynamicArray::reserve(int n) {
-	resize(2*size-n);
+	this->n = n;
+	DynamicArray temp(n + size);
+	for (int i = 0; i < size; i++) {
+		temp[i] = array[i];
+	}
+	array = new int[size + n];
+	for (int i = 0; i < size; i++) {
+		array[i] = temp[i];
+	}
 }
 
+int DynamicArray::capacity() {
+	return n;
+}
+
+void DynamicArray::pushBack(int x) {
+	if (size + 1 > size + n) {
+		reserve(1);
+	}
+	array[size] = x;
+	size++;
+	if (n != 0) {
+		n--;
+	}
+}
+int DynamicArray::popBack() {
+	int tmp = array[size - 1];
+	array[size - 1] = NULL;
+	size--;
+	return tmp;
+}
